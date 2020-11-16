@@ -19,10 +19,11 @@ class  PostList extends Component{
     }
 
     componentDidMount(){
-        unsplash.photos.listPhotos(1, Infinity, "latest")
+
+        unsplash.photos
+        .listPhotos(1, 20, "latest")
         .then(toJson)
         .then(json => {
-         console.log(json);
          this.setState({
                 posts:json
         })
@@ -33,13 +34,19 @@ class  PostList extends Component{
     }
     render(){
 
-        const childElements = this.posts.map(function(element){
+        const childElements = this.state.posts.map(function(element){
             return (
                  <li className="image-element-class">
-                     <img src={element.src} alt="broken " />
+                     <img
+                        src={"https://images.unsplash.com/"+element.img}
+                        alt={element.alt_description}
+                        width="50%"
+                        height="50%" >
+                        </img>
                  </li>
              );
          });
+
         return(
             <div>
             <Masonry
