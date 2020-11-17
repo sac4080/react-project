@@ -14,18 +14,19 @@ class  PostList extends Component{
     constructor(props){
         super(props)
         this.state={
-            posts:[{"src":"lol"}]
+            posts:[{"urls":"lol"}],
+            loaded:false
         }
     }
 
     componentDidMount(){
-
-        unsplash.photos
-        .listPhotos(1, 20, "latest")
+        unsplash.photos.listPhotos(1, 100, "latest")
         .then(toJson)
         .then(json => {
+         console.log(json);
          this.setState({
-                posts:json
+                posts:json,
+                loaded:true
         })
     });
 
@@ -35,17 +36,28 @@ class  PostList extends Component{
     render(){
 
         const childElements = this.state.posts.map(function(element){
+
             return (
-                 <li className="image-element-class">
-                     <img
-                        src={"https://images.unsplash.com/"+element.img}
-                        alt={element.alt_description}
-                        width="50%"
-                        height="50%" >
-                        </img>
-                 </li>
+              <div className="column">
+                <div className="row">
+                  <div className="myImg">
+                   <li>
+                     <img src={element.urls.regular}
+                     alt={element.alt_description}
+                     title={element.alt_description}/>
+                     
+                    </li>
+              </div></div></div>
              );
          });
+
+         if(!this.state.loaded)
+            return(
+                <div>
+                    loading ....
+                </div>
+            )
+
 
         return(
             <div>
